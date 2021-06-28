@@ -46,6 +46,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun removeZeroAfterDot(result: String): String {
+        var value = result
+        if (result.contains(".0")) //exemple 99.0645 sera 99.06
+            value = result.substring(0, result.length - 2)
+
+        return value
+    }
+
     fun onOperator(view: View) { //si un operateur est dejà present alors je ne l'ajoute pas
         if (lastNumeric && !isOperatorWasAdded(myBinding.tvInput.text.toString())) {
             myBinding.tvInput.append((view as Button).text)
@@ -82,12 +90,47 @@ class MainActivity : AppCompatActivity() {
                     var one = splitvalue[0] // 99
                     var two = splitvalue[1] // 5
 
-                    if(!prefix.isEmpty())
-                    {
+                    if (!prefix.isEmpty()) {
                         one = prefix + one
                     }
 
-                    myBinding.tvInput.text = (one.toDouble() - two.toDouble()).toString()
+                    myBinding.tvInput.text = removeZeroAfterDot((one.toDouble() - two.toDouble()).toString())
+                } else if (tvValue.contains("+")) {
+                    // je récupère une liste
+                    val splitvalue = tvValue.split("+")
+                    //exemple 99-5
+                    var one = splitvalue[0] // 99
+                    var two = splitvalue[1] // 5
+
+                    if (!prefix.isEmpty()) {
+                        one = prefix + one
+                    }
+
+                    myBinding.tvInput.text = removeZeroAfterDot((one.toDouble() + two.toDouble()).toString())
+                } else if (tvValue.contains("*")) {
+                    // je récupère une liste
+                    val splitvalue = tvValue.split("*")
+                    //exemple 99-5
+                    var one = splitvalue[0] // 99
+                    var two = splitvalue[1] // 5
+
+                    if (!prefix.isEmpty()) {
+                        one = prefix + one
+                    }
+
+                    myBinding.tvInput.text = removeZeroAfterDot((one.toDouble() * two.toDouble()).toString())
+                } else if (tvValue.contains("/")) {
+                    // je récupère une liste
+                    val splitvalue = tvValue.split("/")
+                    //exemple 99-5
+                    var one = splitvalue[0] // 99
+                    var two = splitvalue[1] // 5
+
+                    if (!prefix.isEmpty()) {
+                        one = prefix + one
+                    }
+
+                    myBinding.tvInput.text = removeZeroAfterDot((one.toDouble() / two.toDouble()).toString())
                 }
 
             } catch (e: ArithmeticException) {
